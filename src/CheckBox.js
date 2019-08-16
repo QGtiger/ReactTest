@@ -23,11 +23,9 @@ class CheckBox extends Component{
         console.log(coffee)
         this.setState((precState)=>{
             return {coffee}
-        }, ()=>{
-            console.log(this.state.coffee)
         });
 
-        this.forceUpdate();
+        console.log(this.state.coffee)
     }
 
     render(){
@@ -35,7 +33,10 @@ class CheckBox extends Component{
 
         return (
             <div>
-                <p>请选择您要的咖啡: {coffee}</p>
+                <p>请选择您要的咖啡: {coffee.map((item, index)=>{
+                    return <li key={index}>{item}</li>;
+                })}
+                </p>
                 <label>
                     {choices[0]}
                     <input 
