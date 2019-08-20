@@ -4,7 +4,12 @@ import './App.css';
 import CheckBox from './CheckBox';
 import SingleSelect from './SingleSelect';
 import MultipleSelect from './MultipleSelect'
-
+import List from './List'
+import emitter from './events'
+import Motion1 from './motion1'
+import Motion2 from './Motion2'
+import TabNav from './Tab'
+import CommentList from './CommentList'
 
 function FormattedDate(props){
   // let elemntStyle={
@@ -62,13 +67,18 @@ class App extends React.Component{
       isToggleOn: true
     };
     this.handleClick = this.handleClick.bind(this);
+    this.handleItemChange = this.handleItemChange.bind(this);
   }
-  
+
   componentDidMount(){
     this.timerID = setInterval(
       ()=>{this.tick()},
       1000
-    )
+    );
+
+    this.itemChange = emitter.on('ItemChange', (data)=>{
+      console.log(data)
+    })
   }
 
   tick(){
@@ -84,8 +94,13 @@ class App extends React.Component{
     }));
   }
 
+  handleItemChange(item){
+    //console.log(item)
+  }
+
   componentWillUnmount(){
     clearInterval(this.timerID);
+    emitter.removeListener(this.itemChange)
   }
 
   render(){
@@ -104,6 +119,11 @@ class App extends React.Component{
           <CheckBox />
           <SingleSelect />
           <MultipleSelect />
+          <List  handleItemChange={this.handleItemChange}/>
+          <Motion1/>
+          <Motion2/>
+          <TabNav panels={[<p order={1}>1</p>,<p order={2}>2</p>]}></TabNav>
+          <CommentList promise={fetch('/api/response.json')} />
         </header>
       </div>
     );
